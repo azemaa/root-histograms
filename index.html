@@ -13,10 +13,16 @@
     <script>
         // Open ROOT file and directly load the specific histogram
         JSROOT.openFile("histograms_in_off_spill.root").then(file => {
-            file.readObject("0x10000002_charge_vs_channel", obj => {
-                JSROOT.draw("histogram", obj, "colz");
-            });
-        });
+    console.log(file);  // Log the file contents to check what's inside
+
+    file.readObject("0x10000002_charge_vs_channel", obj => {
+        if (obj) {
+            JSROOT.draw("histogram", obj, "colz");
+        } else {
+            console.error("Object not found: 0x10000002_charge_vs_channel");
+        }
+    });
+});
     </script>
 </body>
 </html>
