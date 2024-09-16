@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSROOT Multiple Histograms</title>
+    <script src="https://root.cern/js/latest/scripts/JSRootCore.js"></script>
+</head>
+<body>
+    <h1>Select Histogram to View:</h1>
+    <select id="histogram-selector">
+        <option value="0x10000002_charge_vs_channel">Histogram 1</option>
+        <!--option value="hist2">Histogram 2</option> -->
+        <!-- Add more histograms as needed -->
+    </select>
+
+    <div id="histogram" style="width: 100%; height: 600px; margin-top: 20px;"></div>
+
+    <script>
+        // Open ROOT file
+        JSROOT.openFile("histograms_in_off_spill.root").then(file => {
+            // Function to read and draw the selected histogram
+            function drawHistogram(histName) {
+                file.readObject(histName, obj => {
+                    JSROOT.draw("histogram", obj, "colz");
+                });
+            }
+
+            // Initial load - load the first histogram
+            drawHistogram("hist1");
+
+            // Handle changes in the histogram selector
+            document.getElementById('histogram-selector').addEventListener('change', function() {
+                const selectedHist = this.value;
+                drawHistogram(selectedHist);
+            });
+        });
+    </script>
+</body>
+</html>
+
